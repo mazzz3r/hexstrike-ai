@@ -187,7 +187,12 @@
         hexstrike-ai-project = pyproject-nix.lib.project.loadRequirementsTxt {
           projectRoot = ./.;
         };
-        hexstrike-attrs = hexstrike-ai-project.renderers.buildPythonPackage { inherit python; };
+        hexstrike-attrs =
+          hexstrike-ai-project.renderers.buildPythonPackage {
+            inherit python;
+            format = "other";
+            dontBuild = true;
+          };
         hexstrike-ai-server-pkg = python.pkgs.buildPythonApplication (hexstrike-attrs // {
           name = "hexstrike-ai-server";
           nativeBuildInputs = [ pkgs.makeWrapper ];
