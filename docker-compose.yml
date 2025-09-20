@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  hexstrike:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hexstrike-ai:latest
+    container_name: hexstrike-ai
+    restart: unless-stopped
+    user: "0:0"
+    environment:
+      HEXSTRIKE_HOST: "0.0.0.0"
+      HEXSTRIKE_PORT: "8888"
+      PYTHONUNBUFFERED: "1"
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./data:/opt/hexstrike/data
+      - ./logs:/opt/hexstrike/logs
+      - ./cache:/opt/hexstrike/cache
+      - ./workspace:/opt/hexstrike/workspace
+      - ./hexstrike-ai-mcp.json:/opt/hexstrike/hexstrike-ai-mcp.json:ro
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - NET_BIND_SERVICE
+    security_opt:
+      - seccomp=unconfined
+    tmpfs:
+      - /tmp:exec
+    command: ["python", "hexstrike_server.py", "--host", "0.0.0.0", "--port", "8888"]

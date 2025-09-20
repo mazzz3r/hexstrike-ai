@@ -127,6 +127,44 @@ pip3 install -r requirements.txt
 
 ```
 
+### Docker Deployment (NixOS-based)
+
+You can also run HexStrike AI inside an isolated NixOS container that ships with
+the MCP server, Python dependencies, Selenium/Chromium stack, and a broad set of
+security assessment tools pre-installed.
+
+```bash
+# 1. Build the Docker image (installs dependencies via Nix)
+docker compose build
+
+# 2. Launch the service with elevated network capabilities
+docker compose up -d
+
+# 3. Follow the logs
+docker compose logs -f
+```
+
+The compose file runs the container as **root** and grants `NET_RAW`,
+`NET_ADMIN`, and `NET_BIND_SERVICE` capabilities so that tools like `nmap`,
+`masscan`, and `hydra` can open raw sockets or privileged ports. The service
+listens on port **8888** by default and mounts several bind volumes so scan
+artefacts, caches, and logs persist on the host machine.
+
+The Nix-based image now bakes in the full security toolkit referenced below,
+including network recon utilities (`nmap`, `masscan`, `rustscan`, `amass`,
+`subfinder`, `nuclei`, `fierce`, `dnsenum`, `AutoRecon`, `theHarvester`,
+`Responder`, `NetExec`, `enum4linux-ng`), web assessment binaries (`gobuster`,
+`feroxbuster`, `dirsearch`, `ffuf`, `dirb`, `httpx`, `katana`, `nikto`,
+`sqlmap`, `wpscan`, `arjun`, `ParamSpider`, `dalfox`, `wafw00f`), password and
+identity tooling (`THC Hydra`, `john`, `hashcat`, `medusa`, `patator`,
+`CrackMapExec`, `Evil-WinRM`, `hash-identifier`, `ophcrack`), reverse
+engineering utilities (`gdb`, `radare2`, `binwalk`, `Ghidra`, `checksec`,
+`strings`, `objdump`, `volatility3`, `foremost`, `steghide`, `exiftool`), and
+cloud security scanners (`prowler`, `Scout Suite`, `trivy`, `kube-hunter`,
+`kube-bench`, `docker-bench-security`). All CLIs are on the default `PATH` so
+they can be invoked directly by the MCP agents or from an interactive shell
+inside the container.
+
 ### Installation and Setting Up Guide for various AI Clients:
 
 #### Installation & Demo Video
