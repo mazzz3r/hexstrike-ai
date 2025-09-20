@@ -40,7 +40,6 @@ RUN nix-env -iA \
     nixpkgs.gnumake \
     nixpkgs.pkg-config \
     nixpkgs.gcc \
-    nixpkgs.binutils \
     nixpkgs.zlib \
     nixpkgs.openssl \
     nixpkgs.libffi \
