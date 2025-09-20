@@ -191,10 +191,13 @@
           hexstrike-ai-project.renderers.buildPythonPackage {
             inherit python;
             format = "other";
-            dontBuild = true;
           };
         hexstrike-ai-server-pkg = python.pkgs.buildPythonApplication (hexstrike-attrs // {
           name = "hexstrike-ai-server";
+          buildPhase = ''
+            runHook preBuild
+            runHook postBuild
+          '';
           nativeBuildInputs = [ pkgs.makeWrapper ];
           installPhase = ''
             runHook preInstall
@@ -215,6 +218,10 @@
 
         hexstrike-ai-mcp-pkg = python.pkgs.buildPythonApplication (hexstrike-attrs // {
           name = "hexstrike-ai-mcp";
+          buildPhase = ''
+            runHook preBuild
+            runHook postBuild
+          '';
           installPhase = ''
             runHook preInstall
 
