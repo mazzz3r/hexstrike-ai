@@ -159,7 +159,7 @@ including network recon utilities (`nmap`, `masscan`, `rustscan`, `amass`,
 `Responder`, `NetExec`, `enum4linux-ng`, `arp-scan`, `nbtscan`, `rpcclient` via
 `samba`), web assessment binaries (`gobuster`, `feroxbuster`, `dirsearch`, `ffuf`,
 `dirb`, `httpx`, `katana`, `nikto`, `sqlmap`, `wpscan`, `arjun`, `ParamSpider`,
-`dalfox`, `wafw00f`, `ZAP`, `WhatWeb`, `WFuzz`, `Commix`, `NoSQLMap`, `Tplmap`,
+`dalfox`, `wafw00f`, `OWASP ZAP (zap)`, `WhatWeb`, `WFuzz`, `Commix`, `NoSQLMap`, `Tplmap`,
 `SSLyze`, `uro`, `sslscan`), password and identity tooling (`THC Hydra`, `john`,
 `hashcat`, `medusa`, `patator`, `CrackMapExec`, `Evil-WinRM`, `hash-identifier`,
 `ophcrack`, `smbmap`, `hashID`), reverse engineering utilities (`gdb`,

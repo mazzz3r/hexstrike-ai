@@ -11,6 +11,8 @@ ENV NIX_CONFIG="experimental-features = nix-command flakes" \
     LC_ALL=en_US.UTF-8 \
     PATH=/root/.nix-profile/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
+ARG ZAP_VERSION=2.15.0
+
 # Configure nixpkgs channels and update package metadata
 RUN nix-channel --add https://nixos.org/channels/nixos-24.05 nixpkgs \
     && nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable \
@@ -97,7 +99,6 @@ RUN nix-env -iA \
     nixpkgs.exiftool \
     nixpkgs.trivy \
     nixpkgs.checkov \
-    nixpkgs.zaproxy \
     nixpkgs.wfuzz \
     nixpkgs.commix \
     nixpkgs.nosqlmap \
@@ -113,7 +114,11 @@ RUN nix-env -iA nixpkgs.jq
 RUN nix-env -iA \
     nixos-unstable.ophcrack-cli
 
-RUN mkdir -p /opt/tools/bin
+RUN mkdir -p /opt/tools/bin /opt/tools/owasp-zap
+
+RUN curl -L "https://github.com/zaproxy/zaproxy/releases/download/v${ZAP_VERSION}/ZAP_${ZAP_VERSION}_Linux.tar.gz" \
+    | tar -xz --strip-components=1 -C /opt/tools/owasp-zap \
+    && ln -s /opt/tools/owasp-zap/zap.sh /opt/tools/bin/zap
 
 RUN git clone --depth 1 https://github.com/docker/docker-bench-security.git /opt/tools/docker-bench-security \
     && ln -s /opt/tools/docker-bench-security/docker-bench-security.sh /opt/tools/bin/docker-bench-security
