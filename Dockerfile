@@ -2,12 +2,15 @@
 
 FROM nixos/nix:2.21.2
 
-ENV NIXPKGS_ALLOW_UNFREE=1 \
+SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
+
+ENV NIX_CONFIG="experimental-features = nix-command flakes" \
+    NIXPKGS_ALLOW_UNFREE=1 \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
     PATH=/root/.nix-profile/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-# Configure nixpkgs channel and update package metadata
+# Configure nixpkgs channels and update package metadata
 RUN nix-channel --add https://nixos.org/channels/nixos-24.05 nixpkgs \
     && nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable \
     && nix-channel --update
@@ -43,7 +46,8 @@ RUN nix-env -iA \
     nixpkgs.python311Full \
     nixpkgs.mitmproxy \
     nixpkgs.chromium \
-    nixpkgs.chromedriver
+    nixpkgs.chromedriver \
+    nixpkgs.nodejs_20
 
 # Install core security tooling leveraged by HexStrike AI agents
 RUN nix-env -iA \
@@ -59,6 +63,9 @@ RUN nix-env -iA \
     nixpkgs.responder \
     nixpkgs.netexec \
     nixpkgs.enum4linux-ng \
+    nixpkgs.arp-scan \
+    nixpkgs.nbtscan \
+    nixpkgs.samba \
     nixpkgs.gobuster \
     nixpkgs.feroxbuster \
     nixpkgs.ffuf \
@@ -70,6 +77,7 @@ RUN nix-env -iA \
     nixpkgs.wpscan \
     nixpkgs.dalfox \
     nixpkgs.wafw00f \
+    nixpkgs.sslscan \
     nixpkgs.thc-hydra \
     nixpkgs.john \
     nixpkgs.hashcat \
@@ -89,8 +97,18 @@ RUN nix-env -iA \
     nixpkgs.exiftool \
     nixpkgs.trivy \
     nixpkgs.checkov \
+    nixpkgs.zaproxy \
+    nixpkgs.wfuzz \
+    nixpkgs.commix \
+    nixpkgs.nosqlmap \
+    nixpkgs.tplmap \
+    nixpkgs.whatweb \
+    nixpkgs.burpsuite \
     nixpkgs.kube-hunter \
-    nixpkgs.kube-bench
+    nixpkgs.kube-bench \
+    nixpkgs.metasploit
+
+RUN nix-env -iA nixpkgs.jq
 
 RUN nix-env -iA \
     nixos-unstable.ophcrack-cli
@@ -125,7 +143,11 @@ RUN python3 -m venv /opt/venv \
         paramspider \
         patator \
         prowler \
-        scout-suite
+        scout-suite \
+        smbmap \
+        sslyze \
+        uro \
+        hashID
 
 # Copy application source
 COPY . /opt/hexstrike

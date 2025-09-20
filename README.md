@@ -142,6 +142,9 @@ docker compose up -d
 
 # 3. Follow the logs
 docker compose logs -f
+
+# 4. (Optional) Spawn an interactive shell with the full toolkit on PATH
+docker compose run --rm hexstrike bash
 ```
 
 The compose file runs the container as **root** and grants `NET_RAW`,
@@ -153,14 +156,17 @@ artefacts, caches, and logs persist on the host machine.
 The Nix-based image now bakes in the full security toolkit referenced below,
 including network recon utilities (`nmap`, `masscan`, `rustscan`, `amass`,
 `subfinder`, `nuclei`, `fierce`, `dnsenum`, `AutoRecon`, `theHarvester`,
-`Responder`, `NetExec`, `enum4linux-ng`), web assessment binaries (`gobuster`,
-`feroxbuster`, `dirsearch`, `ffuf`, `dirb`, `httpx`, `katana`, `nikto`,
-`sqlmap`, `wpscan`, `arjun`, `ParamSpider`, `dalfox`, `wafw00f`), password and
-identity tooling (`THC Hydra`, `john`, `hashcat`, `medusa`, `patator`,
-`CrackMapExec`, `Evil-WinRM`, `hash-identifier`, `ophcrack`), reverse
-engineering utilities (`gdb`, `radare2`, `binwalk`, `Ghidra`, `checksec`,
-`strings`, `objdump`, `volatility3`, `foremost`, `steghide`, `exiftool`), and
-cloud security scanners (`prowler`, `Scout Suite`, `trivy`, `kube-hunter`,
+`Responder`, `NetExec`, `enum4linux-ng`, `arp-scan`, `nbtscan`, `rpcclient` via
+`samba`), web assessment binaries (`gobuster`, `feroxbuster`, `dirsearch`, `ffuf`,
+`dirb`, `httpx`, `katana`, `nikto`, `sqlmap`, `wpscan`, `arjun`, `ParamSpider`,
+`dalfox`, `wafw00f`, `ZAP`, `WhatWeb`, `WFuzz`, `Commix`, `NoSQLMap`, `Tplmap`,
+`SSLyze`, `uro`, `sslscan`), password and identity tooling (`THC Hydra`, `john`,
+`hashcat`, `medusa`, `patator`, `CrackMapExec`, `Evil-WinRM`, `hash-identifier`,
+`ophcrack`, `smbmap`, `hashID`), reverse engineering utilities (`gdb`,
+`radare2`, `binwalk`, `Ghidra`, `checksec`, `strings`, `objdump`,
+`volatility3`, `foremost`, `steghide`, `exiftool`, `Metasploit`), browser and
+proxy tooling (`Chromium`, `chromedriver`, `Burp Suite`), and cloud security
+scanners (`prowler`, `Scout Suite`, `trivy`, `checkov`, `kube-hunter`,
 `kube-bench`, `docker-bench-security`). All CLIs are on the default `PATH` so
 they can be invoked directly by the MCP agents or from an interactive shell
 inside the container.
