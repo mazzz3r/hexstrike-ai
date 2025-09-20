@@ -2,7 +2,8 @@
 
 FROM nixos/nix:2.21.2
 
-SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
+# The base nixos/nix image does not provide /bin/bash; invoke bash via env
+SHELL ["/usr/bin/env", "bash", "-euo", "pipefail", "-c"]
 
 ENV NIX_CONFIG="experimental-features = nix-command flakes" \
     NIXPKGS_ALLOW_UNFREE=1 \
