@@ -190,6 +190,7 @@
         hexstrike-attrs =
           hexstrike-ai-project.renderers.buildPythonPackage {
             inherit python;
+            pyproject = null;
             format = "other";
           };
         hexstrike-ai-server-pkg = python.pkgs.buildPythonApplication (hexstrike-attrs // {
