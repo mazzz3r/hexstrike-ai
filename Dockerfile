@@ -101,7 +101,6 @@ RUN nix-env -iA \
     nixpkgs.checkov \
     nixpkgs.wfuzz \
     nixpkgs.commix \
-    nixpkgs.tplmap \
     nixpkgs.whatweb \
     nixpkgs.burpsuite \
     nixpkgs.kube-hunter \
@@ -152,7 +151,8 @@ RUN python3 -m venv /opt/venv \
         sslyze \
         uro \
         hashID \
-        nosqlmap
+        nosqlmap \
+        tplmap
 
 # Copy application source
 COPY . /opt/hexstrike
