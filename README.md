@@ -163,13 +163,19 @@ including network recon utilities (`nmap`, `masscan`, `rustscan`, `amass`,
 `SSLyze`, `uro`, `sslscan`), password and identity tooling (`THC Hydra`, `john`,
 `hashcat`, `medusa`, `patator`, `CrackMapExec`, `Evil-WinRM`, `hash-identifier`,
 `ophcrack`, `smbmap`, `hashID`), reverse engineering utilities (`gdb`,
-`radare2`, `binwalk`, `Ghidra`, `checksec`, `strings`, `objdump`,
-`volatility3`, `foremost`, `steghide`, `exiftool`, `Metasploit`), browser and
-proxy tooling (`Chromium`, `chromedriver`, `Burp Suite`), and cloud security
+`radare2`, `binwalk`, `checksec`, `strings`, `objdump`, `volatility3`,
+`foremost`, `steghide`, `exiftool`, `Metasploit`, `Ghidra` via `/opt/tools/ghidra`),
+browser and proxy tooling (`Chromium`, `chromedriver`, `Burp Suite`), and cloud security
 scanners (`prowler`, `Scout Suite`, `trivy`, `checkov`, `kube-hunter`,
 `kube-bench`, `docker-bench-security`). All CLIs are on the default `PATH` so
 they can be invoked directly by the MCP agents or from an interactive shell
 inside the container.
+
+> **Note:** Some upstream security tool packages only publish x86_64 builds. The
+> Dockerfile sets `NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1` and installs Ghidra from
+> its upstream distribution so the image still assembles cleanly on alternative
+> architectures (such as Apple Silicon hosts) while keeping all command line
+> interfaces available on the container `PATH`.
 
 ### Installation and Setting Up Guide for various AI Clients:
 

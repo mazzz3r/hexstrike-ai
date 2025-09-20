@@ -7,11 +7,14 @@ SHELL ["/usr/bin/env", "bash", "-euo", "pipefail", "-c"]
 
 ENV NIX_CONFIG="experimental-features = nix-command flakes" \
     NIXPKGS_ALLOW_UNFREE=1 \
+    NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
     PATH=/root/.nix-profile/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 ARG ZAP_VERSION=2.15.0
+ARG GHIDRA_VERSION=10.4
+ARG GHIDRA_DIST=ghidra_10.4_PUBLIC_20230928
 
 # Configure nixpkgs channels and update package metadata
 RUN nix-channel --add https://nixos.org/channels/nixos-24.05 nixpkgs \
@@ -49,7 +52,8 @@ RUN nix-env -iA \
     nixpkgs.mitmproxy \
     nixpkgs.chromium \
     nixpkgs.chromedriver \
-    nixpkgs.nodejs_20
+    nixpkgs.nodejs_20 \
+    nixpkgs.jdk17
 
 # Install core security tooling leveraged by HexStrike AI agents
 RUN nix-env -iA \
@@ -91,7 +95,6 @@ RUN nix-env -iA \
     nixpkgs.gdb \
     nixpkgs.binwalk \
     nixpkgs.ropgadget \
-    nixpkgs.ghidra-bin \
     nixpkgs.checksec \
     nixpkgs.volatility3 \
     nixpkgs.foremost \
@@ -117,6 +120,13 @@ RUN mkdir -p /opt/tools/bin /opt/tools/owasp-zap
 RUN curl -L "https://github.com/zaproxy/zaproxy/releases/download/v${ZAP_VERSION}/ZAP_${ZAP_VERSION}_Linux.tar.gz" \
     | tar -xz --strip-components=1 -C /opt/tools/owasp-zap \
     && ln -s /opt/tools/owasp-zap/zap.sh /opt/tools/bin/zap
+
+RUN curl -L "https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_${GHIDRA_VERSION}_build/${GHIDRA_DIST}.zip" \
+    -o /tmp/ghidra.zip \
+    && unzip /tmp/ghidra.zip -d /opt/tools \
+    && mv /opt/tools/${GHIDRA_DIST} /opt/tools/ghidra \
+    && ln -s /opt/tools/ghidra/ghidraRun /opt/tools/bin/ghidra \
+    && rm /tmp/ghidra.zip
 
 RUN git clone --depth 1 https://github.com/docker/docker-bench-security.git /opt/tools/docker-bench-security \
     && ln -s /opt/tools/docker-bench-security/docker-bench-security.sh /opt/tools/bin/docker-bench-security
