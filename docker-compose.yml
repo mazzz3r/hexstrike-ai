@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  hexstrike:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hexstrike-ai:latest
+    container_name: hexstrike-ai
+    user: "0:0"
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      HEXSTRIKE_HOST: "0.0.0.0"
+      HEXSTRIKE_PORT: "8888"
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./data:/workspace/data
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
