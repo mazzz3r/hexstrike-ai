@@ -188,11 +188,14 @@
           projectRoot = ./.;
         };
         hexstrike-attrs =
-          hexstrike-ai-project.renderers.buildPythonPackage {
-            inherit python;
-            pyproject = null;
-            format = "other";
-          };
+          let
+            rendered = hexstrike-ai-project.renderers.buildPythonPackage {
+              inherit python;
+              pyproject = null;
+              format = "other";
+            };
+          in
+          builtins.removeAttrs rendered [ "pyproject" "format" ];
         hexstrike-ai-server-pkg = python.pkgs.buildPythonApplication (hexstrike-attrs // {
           name = "hexstrike-ai-server";
           buildPhase = ''
