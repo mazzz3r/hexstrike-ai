@@ -15,9 +15,9 @@ COPY hexstrike-ai-mcp.json ./
 COPY assets ./assets
 COPY README.md ./
 
-RUN nix --extra-experimental-features "nix-command flakes" --impure profile install .#hexstrike-ai-server \
-    && nix --extra-experimental-features "nix-command flakes" --impure profile install .#hexstrike-ai-mcp \
-    && nix --extra-experimental-features "nix-command flakes" --impure profile install nixpkgs#bashInteractive \
+RUN nix --extra-experimental-features "nix-command flakes" profile install --impure .#hexstrike-ai-server \
+    && nix --extra-experimental-features "nix-command flakes" profile install --impure .#hexstrike-ai-mcp \
+    && nix --extra-experimental-features "nix-command flakes" profile install --impure nixpkgs#bashInteractive \
     && rm -rf /root/.cache/nix
 
 # Provide a writable workspace for scan outputs and reports
